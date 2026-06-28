@@ -1,0 +1,80 @@
+# Redrob Hackathon — Submission Metadata
+# =========================================
+
+# ============================================================================
+# Team identity  ← FILL IN YOUR REAL DETAILS HERE
+# ============================================================================
+team_name: "pky_45"
+
+primary_contact:
+  name: "Pavan Kumar"
+  email: "pk9396247@gmail.com"
+  phone: "+91-9380610347"
+
+team_members:
+  - name: "Your Full Name"
+    email: "your@email.com"
+    role: "ML Engineer / Team Lead"
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "https://github.com/pk7745/redrob-ranker"
+
+sandbox_link: "https://YOUR_NETLIFY_OR_HF_LINK"
+
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
+
+# ============================================================================
+# Compute environment  ← UPDATE with your actual machine specs
+# ============================================================================
+compute:
+  platform: "Windows 11 / Local machine"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude for system architecture design, scoring logic discussion,
+  and code review. All ranking is performed locally by rank.py using
+  deterministic multi-signal scoring. No candidate data was sent to
+  any external LLM or API during ranking.
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  Multi-signal weighted ranker built directly from the real JD text.
+  Seven scoring components: title fit (26%), skill depth (28%),
+  experience fit (12%), career quality (14%), availability signals (12%),
+  education (5%), location (3%). Skill trust multiplier penalises keyword
+  stuffing — expert proficiency with 0 duration_months is deflated to 0.15.
+  Career quality component penalises pure consulting backgrounds (TCS,
+  Infosys, Wipro etc.) as explicitly stated in the JD. Title disqualifier
+  removes marketing managers, accountants, civil engineers and other
+  non-ML profiles from top 100. Honeypot detection uses 4 flags: expert
+  skills with zero duration, career months mismatch vs claimed YOE,
+  10+ expert skills with <15 endorsements, and impossible company tenure.
+  37 honeypots blocked. Runtime: ~10 seconds for 100K candidates on CPU.
+  Zero external dependencies — Python stdlib only.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true

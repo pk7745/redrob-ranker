@@ -1,0 +1,5 @@
+# No external packages required.
+# rank.py uses Python standard library only:
+#   gzip, json, csv, sys, time, argparse, re, datetime, collections
+#
+# Requires: Python 3.8+
