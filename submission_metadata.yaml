@@ -21,7 +21,7 @@ team_members:
 # ============================================================================
 github_repo: "https://github.com/pk7745/redrob-ranker"
 
-sandbox_link: "https://YOUR_NETLIFY_OR_HF_LINK"
+sandbox_link: "https://fancy-llama-338c79.netlify.app/"
 
 reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
 
