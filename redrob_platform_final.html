@@ -38,7 +38,7 @@ input,button,select{font-family:'Inter',sans-serif}
 @keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── LAYOUT ─────────────────────────────────────────────────────────────── */
-#app{display:flex;height:100vh;width:100vw;overflow:hidden}
+#app{display:flex;height:100vh;width:100vw;overflow:hidden;min-width:320px}
 
 /* ── 3D SIDEBAR ─────────────────────────────────────────────────────────── */
 #sidebar{
@@ -49,9 +49,10 @@ input,button,select{font-family:'Inter',sans-serif}
   border-right:1px solid rgba(108,99,255,.15);
   display:flex;flex-direction:column;
   position:relative;z-index:200;
-  transition:width .35s cubic-bezier(.4,0,.2,1);
+  transition:width .35s cubic-bezier(.4,0,.2,1),transform .35s cubic-bezier(.4,0,.2,1);
   overflow:hidden;
   box-shadow:4px 0 32px rgba(0,0,0,.5);
+  min-height:0;
 }
 #sidebar:hover,#sidebar.expanded{width:var(--sidebar-exp)}
 .sb-top{padding:16px 0;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid rgba(255,255,255,.05);gap:0}
@@ -63,7 +64,9 @@ input,button,select{font-family:'Inter',sans-serif}
 #sidebar:hover .sb-tagline,#sidebar.expanded .sb-tagline{opacity:1}
 
 /* NAV ITEMS */
-.sb-nav{flex:1;padding:12px 0;display:flex;flex-direction:column;gap:2px}
+.sb-nav{flex:1;padding:12px 0;display:flex;flex-direction:column;gap:2px;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(108,99,255,.3) transparent}
+.sb-nav::-webkit-scrollbar{width:3px}
+.sb-nav::-webkit-scrollbar-thumb{background:rgba(108,99,255,.3);border-radius:3px}
 .sb-item{
   display:flex;align-items:center;gap:12px;
   padding:11px 15px;
@@ -131,7 +134,7 @@ input,button,select{font-family:'Inter',sans-serif}
 .sb-stat-val{font-size:11px;font-weight:700;color:#fff;margin-left:auto}
 
 /* ── MAIN CONTENT ───────────────────────────────────────────────────────── */
-#main{flex:1;height:100vh;overflow-y:auto;overflow-x:hidden;position:relative}
+#main{flex:1;height:100vh;overflow-y:auto;overflow-x:auto;position:relative;min-width:0}
 
 /* ── PAGE PANELS ─────────────────────────────────────────────────────────── */
 .page{display:none;animation:pageIn .35s ease both;min-height:100vh}
@@ -144,6 +147,8 @@ input,button,select{font-family:'Inter',sans-serif}
   background:rgba(7,7,15,.85);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:100;
+  flex-wrap:wrap;min-height:56px;gap:8px;
+  overflow:hidden;
 }
 .topbar-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:10px}
 .topbar-breadcrumb{font-size:12px;color:var(--muted)}
@@ -205,8 +210,8 @@ h1.hero-h span{background:var(--vg);-webkit-background-clip:text;-webkit-text-fi
 .hs-desc{font-size:12px;color:var(--muted);line-height:1.6}
 
 /* ── DASHBOARD PAGE ──────────────────────────────────────────────────────── */
-.dash-inner{padding:24px 28px;max-width:1400px}
-.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.dash-inner{padding:24px 28px;max-width:1400px;min-width:0;width:100%}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:20px}
 .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;transition:border-color .2s}
 .kpi-card:hover{border-color:rgba(108,99,255,.25)}
 .kpi-v{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#fff;line-height:1}
@@ -215,7 +220,7 @@ h1.hero-h span{background:var(--vg);-webkit-background-clip:text;-webkit-text-fi
 .kpi-s{font-size:11px;margin-top:3px}
 
 /* charts row */
-.charts-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.charts-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
 .chart-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
 .chart-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:7px}
 .chart-title::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -292,7 +297,7 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
 .cmpt tr:hover td{background:rgba(108,99,255,.03)}
 
 /* ── ANALYTICS PAGE ──────────────────────────────────────────────────────── */
-.analytics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.analytics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:16px}
 .analytics-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color .2s}
 .analytics-card:hover{border-color:rgba(108,99,255,.2)}
 .a-chart-row{display:flex;flex-direction:column;gap:9px}
@@ -439,25 +444,44 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
 #chat-toggle:hover{transform:scale(1.1)}
 
 /* ── RESPONSIVE ──────────────────────────────────────────────────────────── */
+@media(max-width:1100px){
+  .wc-layout{grid-template-columns:1fr}
+  .radar-detail-grid{grid-template-columns:1fr}
+}
 @media(max-width:900px){
-  :root{--sidebar-w:56px;--sidebar-exp:200px}
+  :root{--sidebar-w:52px;--sidebar-exp:190px}
   .hero-content{grid-template-columns:1fr;gap:32px}
   .hero-right{display:none}
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
   .charts-row,.analytics-grid{grid-template-columns:1fr}
   .d-kpis{grid-template-columns:repeat(2,1fr)}
   .how-steps-row{grid-template-columns:repeat(2,1fr)}
   .map-layout{grid-template-columns:1fr;height:auto}
   #chatbot{width:calc(100vw - 16px);right:8px}
+  .pipeline-cols{grid-template-columns:1fr}
+  .wc-layout{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  :root{--sidebar-w:0px;--sidebar-exp:220px}
+  #sidebar{position:fixed;z-index:500;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1),width .35s}
+  #sidebar:hover,#sidebar.expanded{transform:translateX(0);width:var(--sidebar-exp)}
+  #main{margin-left:0}
+  .d-kpis{grid-template-columns:repeat(2,1fr)}
+  .radar-detail-grid{grid-template-columns:1fr}
+  .topbar-title .topbar-breadcrumb{display:none}
 }
 @media(max-width:600px){
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .dash-inner,.map-inner{padding:14px 16px}
+  .dash-inner,.map-inner,.radar-page,.pipeline-page,.heatmap-page,.wc-page{padding:12px 14px}
+  .how-steps-row{grid-template-columns:1fr}
+  .d-kpis{grid-template-columns:1fr 1fr}
+  .detail-panel{width:98vw;border-radius:12px}
+  .hero-stat-row{gap:16px}
+  .h-stat .hv{font-size:20px}
+  #chat-toggle{bottom:16px;right:16px;width:46px;height:46px}
 }
 
 /* ── RADAR CHART ──────────────────────────────────────────────────────────── */
 .radar-page{padding:24px 28px}
-.radar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.radar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:20px}
 .radar-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;cursor:pointer;transition:border-color .2s;position:relative;overflow:hidden}
 .radar-card:hover{border-color:rgba(108,99,255,.35)}
 .radar-card.selected{border-color:var(--v);background:rgba(108,99,255,.06)}
@@ -480,7 +504,7 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
 /* ── READY NOW (PIPELINE) ─────────────────────────────────────────────────── */
 .pipeline-page{padding:24px 28px}
 .pipeline-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.pipeline-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pipeline-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
 .pipeline-col{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .pipeline-col-head{padding:14px 16px;border-bottom:1px solid var(--border)}
 .pipeline-col-title{font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
@@ -534,6 +558,66 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
 .avail-title{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .avail-co{font-size:10px;color:var(--muted)}
 .avail-date{font-size:11px;font-weight:700;flex-shrink:0;text-align:right;width:70px}
+
+/* ── RISK FLAGS ──────────────────────────────────────────────────── */
+.risk-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:700;white-space:nowrap}
+.risk-budget{background:rgba(255,94,94,.12);color:var(--red);border:1px solid rgba(255,94,94,.25)}
+.risk-offer{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.risk-ghost{background:rgba(255,94,94,.10);color:var(--red);border:1px solid rgba(255,94,94,.2)}
+.risk-hunting{background:rgba(34,211,165,.12);color:var(--green);border:1px solid rgba(34,211,165,.25)}
+.risk-notice{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.25)}
+.risk-panel{background:rgba(255,94,94,.06);border:1px solid rgba(255,94,94,.18);border-radius:9px;padding:10px 14px;margin-top:12px}
+.risk-panel-title{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.risk-panel-items{display:flex;flex-direction:column;gap:5px}
+.risk-panel-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.75)}
+.risk-panel-item .ri{font-size:13px;flex-shrink:0}
+.risk-panel-item .rt{flex:1;line-height:1.5}
+.risk-panel-item .rt strong{color:#fff}
+
+/* ── WEIGHT CUSTOMISER ───────────────────────────────────────────── */
+.wc-page{padding:24px 28px}
+.wc-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.wc-reset{background:transparent;border:1px solid var(--border2);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;font-family:inherit}
+.wc-reset:hover{color:#fff;border-color:var(--v)}
+.wc-layout{display:grid;grid-template-columns:340px 1fr;gap:20px;align-items:start;min-width:0}
+.wc-sliders{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px}
+.wc-slider-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;font-family:'Syne',sans-serif}
+.wc-slider-sub{font-size:11px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+.slider-row{margin-bottom:16px}
+.slider-label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.slider-label{font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:7px}
+.slider-label .s-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.slider-weight{font-size:13px;font-weight:800;color:#fff;font-family:'JetBrains Mono',monospace}
+.slider-weight.changed{color:var(--green)}
+input[type=range].wc-range{width:100%;-webkit-appearance:none;height:5px;border-radius:3px;outline:none;cursor:pointer;transition:opacity .2s}
+input[type=range].wc-range::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.4);cursor:pointer;transition:transform .15s}
+input[type=range].wc-range::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.wc-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;border-top:1px solid var(--border);margin-top:4px}
+.wc-total-label{font-size:12px;color:var(--muted)}
+.wc-total-val{font-size:15px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.wc-total-val.ok{color:var(--green)}
+.wc-total-val.warn{color:var(--red)}
+.wc-results{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.wc-results-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.wc-results-title{font-size:14px;font-weight:700;color:#fff;font-family:'Syne',sans-serif}
+.wc-scenario{font-size:11px;color:var(--muted)}
+.wc-table-wrap{overflow-x:auto}
+.wct{width:100%;border-collapse:collapse;min-width:600px}
+.wct th{padding:10px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--dim);border-bottom:1px solid var(--border);background:var(--card)}
+.wct td{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.03);font-size:13px;vertical-align:middle}
+.wct tr:hover td{background:rgba(108,99,255,.04)}
+.rank-change{font-size:10px;font-weight:700;padding:2px 5px;border-radius:4px}
+.rc-up{color:var(--green);background:rgba(34,211,165,.12)}
+.rc-down{color:var(--red);background:rgba(255,94,94,.12)}
+.rc-same{color:var(--dim);background:rgba(255,255,255,.04)}
+
+/* ── SMART EXPORT BAR ────────────────────────────────────────────── */
+.export-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 0 14px}
+.exp-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;font-family:inherit;display:flex;align-items:center;gap:6px}
+.exp-btn:hover{border-color:var(--v2);color:var(--v2);background:rgba(108,99,255,.07)}
+.exp-btn.green{border-color:rgba(34,211,165,.3);color:var(--green)}
+.exp-btn.green:hover{background:rgba(34,211,165,.08)}
+
 </style>
 </style>
 </head>
@@ -592,6 +676,11 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
       <div class="sb-icon">🔥</div>
       <span class="sb-label">Skill Heatmap</span>
       <span class="sb-tooltip">Skill Heatmap</span>
+    </div>
+    <div class="sb-item" onclick="goPage('weights')" id="nav-weights">
+      <div class="sb-icon">⚙️</div>
+      <span class="sb-label">Weight Tuner</span>
+      <span class="sb-tooltip">Weight Tuner</span>
     </div>
   </nav>
 
@@ -749,6 +838,14 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
         </div>
       </div>
       <!-- Toolbar -->
+      <div class="export-bar">
+        <span style="font-size:12px;color:var(--muted);font-weight:600">Export:</span>
+        <button class="exp-btn green" onclick="exportCSV()">⬇ All 100 (CSV)</button>
+        <button class="exp-btn green" onclick="exportFiltered()">⬇ Filtered set (CSV)</button>
+        <button class="exp-btn" onclick="exportJSON()">⬇ JSON</button>
+        <button class="exp-btn" onclick="copyTop5()">📋 Copy Top-5 Summary</button>
+        <span style="font-size:11px;color:var(--dim);margin-left:4px" id="export-status"></span>
+      </div>
       <div class="table-toolbar">
         <div class="search-box"><span class="search-icon">🔍</span><input type="text" id="search-input" placeholder="Search title, company, skill, location…" oninput="applyFilters()"></div>
         <select class="filter-select" id="f-mode" onchange="applyFilters()"><option value="">All modes</option><option value="remote">Remote</option><option value="hybrid">Hybrid</option><option value="flexible">Flexible</option><option value="onsite">Onsite</option></select>
@@ -1002,6 +1099,56 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
       </div>
     </div>
   </div>
+
+  <!-- ── PAGE: WEIGHT CUSTOMISER ────────────────────────────────── -->
+  <div class="page" id="page-weights">
+    <div class="topbar">
+      <div class="topbar-title"><span>⚙️</span><span>Weight Tuner</span><span class="topbar-breadcrumb">/ Customise scoring weights · re-ranks in real-time</span></div>
+      <div class="topbar-actions">
+        <button class="btn-sm btn-ghost" onclick="resetWeights()">↺ Reset to defaults</button>
+        <button class="btn-sm btn-primary" onclick="openDetail(wcRanked[0]?.id)">View #1 →</button>
+      </div>
+    </div>
+    <div class="wc-page">
+      <div style="background:rgba(108,99,255,.07);border:1px solid rgba(108,99,255,.2);border-radius:10px;padding:11px 16px;margin-bottom:18px;font-size:13px;color:var(--v2);line-height:1.65">
+        ⚙️ <strong>Drag the sliders</strong> to change how much each dimension matters. The top-100 candidates re-rank <strong>instantly</strong> using your weights × their individual component scores. Original submission.csv is unaffected.
+      </div>
+      <div class="wc-layout">
+        <div class="wc-sliders">
+          <div class="wc-slider-title">Scoring Weights</div>
+          <div class="wc-slider-sub">Weights must total 100%. Adjust any slider — others auto-balance.</div>
+          <div id="wc-sliders-body"></div>
+          <div class="wc-total">
+            <span class="wc-total-label">Total weight</span>
+            <span class="wc-total-val ok" id="wc-total-val">100%</span>
+          </div>
+        </div>
+        <div class="wc-results">
+          <div class="wc-results-head">
+            <div>
+              <div class="wc-results-title">Re-ranked Candidates</div>
+              <div class="wc-scenario" id="wc-scenario">Default weights (original ranking)</div>
+            </div>
+            <div style="font-size:12px;color:var(--muted)" id="wc-changes">No changes</div>
+          </div>
+          <div class="wc-table-wrap">
+            <table class="wct">
+              <thead><tr>
+                <th>New Rank</th>
+                <th>Candidate</th>
+                <th>New Score</th>
+                <th>Original Rank</th>
+                <th>Change</th>
+                <th>Action</th>
+              </tr></thead>
+              <tbody id="wc-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- #main -->
 </div><!-- #app -->
 
@@ -1025,6 +1172,7 @@ table.cmpt{width:100%;border-collapse:collapse;min-width:640px}
     <button class="ch-send empty" id="chat-send-btn" onclick="sendChat()">➤</button>
   </div>
 </div>
+<button id="mob-menu-btn" onclick="toggleMobSidebar()" style="display:none;position:fixed;top:12px;left:12px;z-index:600;width:36px;height:36px;border-radius:9px;background:rgba(108,99,255,.9);border:none;color:#fff;font-size:16px;cursor:pointer;box-shadow:0 4px 16px rgba(108,99,255,.4)">☰</button>
 <button id="chat-toggle" onclick="toggleChat()">💬</button>
 
 <script>
@@ -1125,6 +1273,23 @@ function sortBy(col) {
 }
 
 // ── TABLE RENDER ──────────────────────────────────────────────────────────
+function getRiskFlags(c) {
+  const flags = [];
+  if (c.sal_max > 60)                           flags.push({cls:'risk-budget',  ico:'💰', label:'Over budget'});
+  if (c.offer_rate >= 0 && c.offer_rate < 0.40) flags.push({cls:'risk-offer',   ico:'⚠️', label:'Low offer accept'});
+  if (c.interview_rate < 0.60)                  flags.push({cls:'risk-ghost',   ico:'👻', label:'Ghost risk'});
+  if (c.apps_30d >= 20)                         flags.push({cls:'risk-hunting', ico:'🔥', label:'Actively hunting'});
+  if (c.notice > 60)                            flags.push({cls:'risk-notice',  ico:'⏳', label:'Long notice'});
+  return flags;
+}
+
+function riskBadgesHTML(c, maxShow) {
+  const flags = getRiskFlags(c);
+  if (!flags.length) return '';
+  const show = flags.slice(0, maxShow || 2);
+  return show.map(f => `<span class="risk-badge ${f.cls}">${f.ico} ${f.label}</span>`).join('');
+}
+
 function renderTable() {
   const start = (page-1)*PAGE_SIZE;
   const slice = filtered.slice(start, start+PAGE_SIZE);
@@ -1223,6 +1388,20 @@ function openDetail(id) {
         <span class="tag-pill tp-dim">${c.id}</span>
       </div>
       <div class="d-reasoning">💡 ${c.reasoning}</div>
+      ${(()=>{
+        const flags = getRiskFlags(c);
+        if (!flags.length) return '';
+        const items = flags.map(f => '<div class="risk-panel-item"><span class="ri">'+f.ico+'</span><span class="rt">'+
+          {
+            'risk-budget': '<strong>Over budget:</strong> Expects ₹'+c.sal_max+'L — above the ₹60L JD ceiling. Confirm comp flexibility before outreach.',
+            'risk-offer': '<strong>Low offer acceptance ('+Math.round(c.offer_rate*100)+'%):</strong> Historically declines most offers. May be using offers as leverage or very selective.',
+            'risk-ghost': '<strong>Low interview completion ('+Math.round(c.interview_rate*100)+'%):</strong> Has a pattern of missing scheduled interviews. Confirm availability carefully.',
+            'risk-hunting': '<strong>Actively hunting ('+c.apps_30d+' apps this month):</strong> Will likely be hired by someone else within days. Move fast.',
+            'risk-notice': '<strong>Long notice ('+c.notice+' days):</strong> Above the preferred 30-day window. Will need approval or buyout.'
+          }[f.cls]+'</span></div>'
+        ).join('');
+        return '<div class="risk-panel"><div class="risk-panel-title">⚠ Recruiter Risk Flags ('+flags.length+')</div><div class="risk-panel-items">'+items+'</div></div>';
+      })()}
     </div>
 
     <div class="d-kpi-row">
@@ -1839,7 +2018,7 @@ function renderTable() {
     const ghColor = c.github >= 70 ? 'var(--green)' : c.github >= 40 ? 'var(--amber)' : 'var(--red)';
     return `<tr class="${inCmp ? 'sel' : ''}" id="row-${c.id}">
       <td><div class="rank-b ${rankBadge}">${c.rank}</div></td>
-      <td><div style="font-weight:600;color:#fff;font-size:13px">${c.title}</div><div style="font-size:11px;color:var(--muted)">${c.company} · ${c.location.split(',')[0]}</div></td>
+      <td><div style="font-weight:600;color:#fff;font-size:13px">${c.title}</div><div style="font-size:11px;color:var(--muted)">${c.company} · ${c.location.split(',')[0]}</div>${riskBadgesHTML(c,2)?'<div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap">'+riskBadgesHTML(c,2)+'</div>':''}</td>
       <td><div class="score-cell"><div class="snum">${c.score.toFixed(4)}</div><div class="strack"><div class="sfill" style="width:${scorePct}%"></div></div></div></td>
       <td><span class="tp tv">${c.yoe}yr</span></td>
       <td><span class="tp tb">${c.matched}/${JD_REQ.length}</span></td>
@@ -2456,6 +2635,286 @@ window.renderAnalytics = function() {
     renderAvailTimeline();
   }, 50);
 };
+
+
+
+// ══════════════════════════════════════════════════════════════════════════
+// WEIGHT CUSTOMISER
+// ══════════════════════════════════════════════════════════════════════════
+const WC_DEFAULT = {skill:28, title:26, career:14, avail:12, exp:12, edu:5, loc:3};
+const WC_LABELS  = {skill:'Skill Depth', title:'Title Fit', career:'Career Quality',
+                    avail:'Availability', exp:'Experience', edu:'Education', loc:'Location'};
+const WC_COLORS  = {skill:'#6c63ff', title:'#22d3a5', career:'#f5a623',
+                    avail:'#3b9eff', exp:'#a855f7', edu:'#ec4899', loc:'#14b8a6'};
+let wcWeights = {...WC_DEFAULT};
+let wcRanked = [];
+let wcInitialized = false;
+
+function initWeights() {
+  if (wcInitialized) return;
+  wcInitialized = true;
+  buildSliders();
+  recalcWeights();
+}
+
+function buildSliders() {
+  const body = document.getElementById('wc-sliders-body');
+  if (!body) return;
+  body.innerHTML = Object.entries(WC_DEFAULT).map(([k, v]) => `
+    <div class="slider-row">
+      <div class="slider-label-row">
+        <div class="slider-label">
+          <div class="s-dot" style="background:${WC_COLORS[k]}"></div>
+          ${WC_LABELS[k]}
+        </div>
+        <div class="slider-weight${wcWeights[k]!==WC_DEFAULT[k]?' changed':''}" id="sw-${k}">${wcWeights[k]}%</div>
+      </div>
+      <input type="range" class="wc-range" min="0" max="60" value="${wcWeights[k]}"
+        id="sl-${k}"
+        style="background:linear-gradient(to right, ${WC_COLORS[k]} 0%, ${WC_COLORS[k]} ${wcWeights[k]/60*100}%, rgba(255,255,255,0.08) ${wcWeights[k]/60*100}%, rgba(255,255,255,0.08) 100%)"
+        oninput="onSlider('${k}', this.value)">
+    </div>`).join('');
+}
+
+function onSlider(key, value) {
+  wcWeights[key] = parseInt(value);
+  // Update slider gradient
+  const sl = document.getElementById('sl-' + key);
+  const col = WC_COLORS[key];
+  if (sl) sl.style.background = `linear-gradient(to right, ${col} 0%, ${col} ${value/60*100}%, rgba(255,255,255,0.08) ${value/60*100}%, rgba(255,255,255,0.08) 100%)`;
+  // Update label
+  const lbl = document.getElementById('sw-' + key);
+  if (lbl) {
+    lbl.textContent = value + '%';
+    lbl.className = 'slider-weight' + (parseInt(value) !== WC_DEFAULT[key] ? ' changed' : '');
+  }
+  // Update total
+  const total = Object.values(wcWeights).reduce((a,b) => a+b, 0);
+  const tv = document.getElementById('wc-total-val');
+  if (tv) {
+    tv.textContent = total + '%';
+    tv.className = 'wc-total-val ' + (total === 100 ? 'ok' : 'warn');
+  }
+  recalcWeights();
+}
+
+function recalcWeights() {
+  // Recompute scores for all candidates using current weights
+  const total = Object.values(wcWeights).reduce((a,b)=>a+b,0);
+  const norm = total > 0 ? 100/total : 1;
+
+  wcRanked = CANDIDATES.map(c => {
+    const cs = c.comp_scores || {};
+    const newScore = Object.entries(wcWeights).reduce((sum, [k, w]) => {
+      return sum + (cs[k] || 0) * (w * norm / 100);
+    }, 0);
+    return {...c, wcScore: Math.round(newScore * 10000) / 10000};
+  }).sort((a, b) => b.wcScore - a.wcScore);
+
+  // Update results table
+  const tbody = document.getElementById('wc-body');
+  if (!tbody) return;
+
+  const changed = wcRanked.filter((c,i) => c.rank !== i+1).length;
+  const scenarioEl = document.getElementById('wc-scenario');
+  const changesEl = document.getElementById('wc-changes');
+  const isDefault = Object.entries(wcWeights).every(([k,v]) => v === WC_DEFAULT[k]);
+
+  if (scenarioEl) scenarioEl.textContent = isDefault ? 'Default weights (original ranking)' : 'Custom weights active';
+  if (changesEl) changesEl.textContent = changed === 0 ? 'No rank changes' :
+    changed + ' candidate' + (changed>1?'s':' ') + ' changed rank';
+
+  tbody.innerHTML = wcRanked.slice(0, 25).map((c, i) => {
+    const newRank = i + 1;
+    const origRank = c.rank;
+    const diff = origRank - newRank;
+    const rankChangeHTML = diff > 0
+      ? `<span class="rank-change rc-up">↑${diff}</span>`
+      : diff < 0
+      ? `<span class="rank-change rc-down">↓${Math.abs(diff)}</span>`
+      : `<span class="rank-change rc-same">—</span>`;
+    const ghColor = c.github>=70?'var(--green)':c.github>=40?'var(--amber)':'var(--red)';
+    return `<tr>
+      <td><div class="rank-b ${newRank<=3?['rg','rs','rb'][newRank-1]:'ro'}">${newRank}</div></td>
+      <td>
+        <div style="font-weight:600;color:#fff;font-size:13px">${c.title}</div>
+        <div style="font-size:11px;color:var(--muted)">${c.company} · ${c.location.split(',')[0]}</div>
+        ${riskBadgesHTML(c,1)?'<div style="margin-top:3px">'+riskBadgesHTML(c,1)+'</div>':''}
+      </td>
+      <td><span style="font-family:JetBrains Mono,monospace;font-weight:700;color:var(--v2)">${c.wcScore.toFixed(4)}</span></td>
+      <td><span class="tp ${origRank<=10?'tv':'td'}">#${origRank}</span></td>
+      <td>${rankChangeHTML}</td>
+      <td><button class="vbtn" onclick="openDetail('${c.id}')">Profile</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function resetWeights() {
+  wcWeights = {...WC_DEFAULT};
+  wcInitialized = false;
+  buildSliders();
+  recalcWeights();
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// SMART EXPORTS
+// ══════════════════════════════════════════════════════════════════════════
+function showExportStatus(msg) {
+  const el = document.getElementById('export-status');
+  if (el) { el.textContent = msg; setTimeout(() => el.textContent = '', 3000); }
+}
+
+function exportFiltered() {
+  const rows = [['candidate_id','rank','score','reasoning']];
+  filtered.forEach(c => rows.push([c.id, c.rank, c.score, '"'+c.reasoning.replace(/"/g,'""')+'"']));
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = 'redrob_filtered_' + filtered.length + '_candidates.csv';
+  a.click();
+  showExportStatus('✓ Exported ' + filtered.length + ' candidates');
+}
+
+function exportJSON() {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(filtered, null, 2)], {type:'application/json'}));
+  a.download = 'redrob_candidates.json';
+  a.click();
+  showExportStatus('✓ JSON exported');
+}
+
+function copyTop5() {
+  const top5 = CANDIDATES.slice(0, 5);
+  const text = top5.map(c =>
+    `#${c.rank} ${c.title} @ ${c.company}
+` +
+    `   Score: ${c.score.toFixed(4)} | YOE: ${c.yoe}yr | Notice: ${c.notice===0?'Immediate':c.notice+'d'} | GitHub: ${c.github<0?'N/A':c.github.toFixed(0)+'/100'}
+` +
+    `   ${c.reasoning}`
+  ).join('\n\n');
+  navigator.clipboard.writeText(text).then(() => showExportStatus('✓ Top-5 copied to clipboard'));
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// ENHANCED REDBOT — component-level comparison
+// ══════════════════════════════════════════════════════════════════════════
+const WC_LABEL_MAP = {skill:'Skill Depth',title:'Title Fit',career:'Career Quality',
+                      avail:'Availability',exp:'Experience',edu:'Education',loc:'Location'};
+const WC_WEIGHT_MAP = {skill:0.28,title:0.26,career:0.14,avail:0.12,exp:0.12,edu:0.05,loc:0.03};
+
+function botReplyEnhanced(msg) {
+  const m = msg.toLowerCase();
+
+  // Detect comparison questions
+  const whyPattern = /why.*(rank.?#?(\d+)|#(\d+)).*(above|better|higher|beat|ahead|below|lower)/i;
+  const comparePattern = /#?(\d+).*(vs|versus|compare|against).?#?(\d+)/i;
+
+  let match = whyPattern.exec(msg) || comparePattern.exec(msg);
+
+  if (match || m.includes('why is rank') || m.includes('explain rank') || m.includes('compare rank')) {
+    // Try to extract two rank numbers from the message
+    const nums = msg.match(/\d+/g);
+    if (nums && nums.length >= 2) {
+      const r1 = parseInt(nums[0]), r2 = parseInt(nums[1]);
+      const c1 = CANDIDATES.find(c => c.rank === r1);
+      const c2 = CANDIDATES.find(c => c.rank === r2);
+      if (c1 && c2 && c1.comp_scores && c2.comp_scores) {
+        const cs1 = c1.comp_scores, cs2 = c2.comp_scores;
+        const higher = c1.score >= c2.score ? c1 : c2;
+        const lower  = c1.score >= c2.score ? c2 : c1;
+        const hcs = higher.comp_scores, lcs = lower.comp_scores;
+
+        // Find decisive dimensions
+        const diffs = Object.entries(WC_WEIGHT_MAP).map(([k,w]) => ({
+          k, w, label: WC_LABEL_MAP[k],
+          hval: Math.min(1,hcs[k]||0), lval: Math.min(1,lcs[k]||0),
+          weightedDiff: (Math.min(1,hcs[k]||0) - Math.min(1,lcs[k]||0)) * w
+        })).sort((a,b) => Math.abs(b.weightedDiff)-Math.abs(a.weightedDiff));
+
+        const decisive = diffs.filter(d => Math.abs(d.weightedDiff) > 0.005).slice(0,3);
+        const lines = decisive.map(d => {
+          const winner = d.weightedDiff > 0 ? `**Rank #${higher.rank}** leads` : `**Rank #${lower.rank}** leads`;
+          return `• **${d.label}** (${Math.round(d.w*100)}% weight): Rank #${higher.rank} = ${(d.hval*100).toFixed(0)} vs Rank #${lower.rank} = ${(d.lval*100).toFixed(0)} → ${winner} by ${(Math.abs(d.weightedDiff)*100).toFixed(1)} weighted pts`;
+        }).join('\n');
+
+        return `**Rank #${higher.rank} (${higher.title} @ ${higher.company}) outscores Rank #${lower.rank} (${lower.title} @ ${lower.company})**\n\nScore: ${higher.score.toFixed(4)} vs ${lower.score.toFixed(4)} (diff: ${(higher.score-lower.score).toFixed(4)})\n\n**Decisive dimensions:**\n${lines}\n\nThe score gap is primarily driven by **${decisive[0]?.label || 'multiple factors'}**. Use the ⚙️ Weight Tuner page to see how the ranking changes if you prioritise different dimensions.`;
+      }
+    }
+  }
+
+  // Risk question
+  if (m.includes('risk') || m.includes('flag') || m.includes('warning') || m.includes('concern')) {
+    const c = chatCtxId ? CANDIDATES.find(x=>x.id===chatCtxId) : null;
+    if (c) {
+      const flags = getRiskFlags(c);
+      if (!flags.length) return `**No risk flags** for Rank #${c.rank} (${c.title} @ ${c.company}). ✓ Within budget · ✓ Interview reliable · ✓ Notice acceptable.`;
+      const details = flags.map(f => `• ${f.ico} **${f.label}**`).join('\n');
+      return `**Risk flags for Rank #${c.rank} (${c.title} @ ${c.company}):**\n\n${details}\n\nThese are early warnings, not disqualifiers. Weigh them against the overall score of ${c.score.toFixed(4)}.`;
+    }
+    const totalRisky = CANDIDATES.filter(c=>getRiskFlags(c).length>0).length;
+    return `**${totalRisky}/100 candidates** have at least one risk flag across the shortlist:\n\n• **Over budget (₹60L+)**: ${CANDIDATES.filter(c=>c.sal_max>60).length} candidates\n• **Low offer acceptance (<40%)**: ${CANDIDATES.filter(c=>c.offer_rate>=0&&c.offer_rate<0.4).length} candidates\n• **Ghost risk (<60% interview rate)**: ${CANDIDATES.filter(c=>c.interview_rate<0.6).length} candidates\n• **Actively hunting (20+ apps/month)**: ${CANDIDATES.filter(c=>c.apps_30d>=20).length} candidates — move fast on these\n• **Long notice (>60 days)**: ${CANDIDATES.filter(c=>c.notice>60).length} candidates\n\nClick any candidate's Profile and scroll past the reasoning to see their specific flags.`;
+  }
+
+  // Budget question
+  if (m.includes('budget') || m.includes('salary') || m.includes('afford') || m.includes('cost')) {
+    const within = CANDIDATES.filter(c=>c.sal_max<=60);
+    const over = CANDIDATES.filter(c=>c.sal_max>60);
+    return `**Budget fit (₹60L ceiling):**\n\n✓ Within budget: **${within.length}/100** candidates\n✗ Over budget: **${over.length}/100** candidates\n\nBest within budget: **Rank #${within[0].rank}** (${within[0].title} @ ${within[0].company}) — score ${within[0].score.toFixed(4)}, expects ₹${within[0].sal_min}–${within[0].sal_max}L.\n\nUse the **Weight Tuner** (⚙️) to re-rank prioritising availability if you need to trade budget for faster joining.`;
+  }
+
+  // Weight tuner question
+  if (m.includes('weight') || m.includes('slider') || m.includes('customis') || m.includes('tuner') || m.includes('adjust')) {
+    return `The **⚙️ Weight Tuner** page (in the sidebar) lets you drag sliders to change how much each of the 7 scoring dimensions matters.\n\nFor example:\n• Drag **Availability** to 40% if you need someone joining in 2 weeks\n• Drag **Skill Depth** to 45% if you're building a research team\n• Drag **Location** to 0% if the role is fully remote\n\nThe top-25 candidates re-rank **instantly** in your browser. Original submission.csv is never changed.`;
+  }
+
+  return null; // Fall through to original botReply
+}
+
+// Hook enhanced bot BEFORE original
+const _origBotReply = botReply;
+window.botReply = function(msg) {
+  const enhanced = botReplyEnhanced(msg);
+  return enhanced !== null ? enhanced : _origBotReply(msg);
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+// HOOK WEIGHT PAGE INTO goPage
+// ══════════════════════════════════════════════════════════════════════════
+const _origGoPage2 = goPage;
+window.goPage = function(page) {
+  _origGoPage2(page);
+  if (page === 'weights') initWeights();
+};
+
+
+// ── MOBILE SIDEBAR TOGGLE ─────────────────────────────────────────────────
+function toggleMobSidebar() {
+  const sb = document.getElementById('sidebar');
+  sb.classList.toggle('expanded');
+}
+
+// Show/hide mobile menu button based on screen width
+function checkMobile() {
+  const btn = document.getElementById('mob-menu-btn');
+  if (btn) btn.style.display = window.innerWidth <= 700 ? 'flex' : 'none';
+  // Close sidebar on mobile when page changes
+  if (window.innerWidth <= 700) {
+    document.getElementById('sidebar').classList.remove('expanded');
+  }
+}
+window.addEventListener('resize', checkMobile);
+window.addEventListener('DOMContentLoaded', checkMobile);
+
+// Close mobile sidebar when clicking main content
+document.addEventListener('click', function(e) {
+  if (window.innerWidth <= 700) {
+    const sb = document.getElementById('sidebar');
+    const btn = document.getElementById('mob-menu-btn');
+    if (sb && btn && !sb.contains(e.target) && !btn.contains(e.target)) {
+      sb.classList.remove('expanded');
+    }
+  }
+});
 
 </script>
 </body>
